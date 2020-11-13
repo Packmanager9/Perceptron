@@ -217,6 +217,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
         draw() {
             canvas_context.fillStyle = this.color
             canvas_context.fillRect(this.x, this.y, this.width, this.height)
+            canvas_context.strokeStyle = "black"
+            canvas_context.strokeRect(this.x, this.y, this.width, this.height)
         }
         move() {
             this.x += this.xmom
@@ -783,45 +785,99 @@ window.addEventListener('DOMContentLoaded', (event) => {
             TIP_engine.body = TIP_engine
             // example usage: if(object.isPointInside(TIP_engine)){ take action }
 
-            if(box1.isPointInside(TIP_engine)){
-                for(let t = 0;t<cepts.length;t++){
-                    if(! (cepts[t].totalRed >= cepts[t].totalGreen && cepts[t].totalRed >= cepts[t].totalBlue)){
-                        cepts[t].marked = 1 
+            if (box1.isPointInside(TIP_engine)) {
+                for (let t = 0; t < cepts.length; t++) {
+                    if (!(cepts[t].totalRed >= cepts[t].totalGreen && cepts[t].totalRed >= cepts[t].totalBlue)) {
+                        cepts[t].marked = 1
                     }
                 }
-            }
-
-            if(box2.isPointInside(TIP_engine)){
-                for(let t = 0;t<cepts.length;t++){
-                    if(! (cepts[t].totalGreen >= cepts[t].totalRed && cepts[t].totalGreen >= cepts[t].totalBlue)){
-                        cepts[t].marked = 1 
-                    }
-                }
-            }
-            if(box3.isPointInside(TIP_engine)){
-                for(let t = 0;t<cepts.length;t++){
-                    if(! (cepts[t].totalBlue >= cepts[t].totalRed && cepts[t].totalBlue >= cepts[t].totalGreen)){
-                        cepts[t].marked = 1 
-                    }
-                }
-            }
-            if(cepts.length < 5){
-                console.log(cepts)
-            }
 
             dots = []
 
-    for (let t = 0;dots.length<99; t++) {
-        let dot = new Circle(Math.random() * 700, Math.random() * 199, 3, "red")
-        if(Math.random()<.33){
-            dot.color = "green"
-        }else if(Math.random()<.45){
-            dot.color = "blue"
-        }
-        if (!(dot.x > 340 && dot.x < 360)) {
-            dots.push(dot)
-        }
-    }
+            for (let t = 0; dots.length < 399; t++) {
+                let dot = new Circle(Math.random() * 700, Math.random() * 199, 3, "black")
+                let colorpick = Math.floor(Math.random() * 3)
+
+
+                if (colorpick == 1) {
+                    dot.color = "green"
+                }
+                if (colorpick == 2) {
+                    dot.color = "blue"
+                }
+                if (colorpick == 0) {
+                    dot.color = "red"
+                }
+                if (!(dot.x > 340 && dot.x < 360)) {
+                    dots.push(dot)
+                }
+            }
+            }
+
+            if (box2.isPointInside(TIP_engine)) {
+                for (let t = 0; t < cepts.length; t++) {
+                    if (!(cepts[t].totalGreen >= cepts[t].totalRed && cepts[t].totalGreen >= cepts[t].totalBlue)) {
+                        cepts[t].marked = 1
+                    }
+                }
+
+            dots = []
+
+            for (let t = 0; dots.length < 399; t++) {
+                let dot = new Circle(Math.random() * 700, Math.random() * 199, 3, "black")
+                let colorpick = Math.floor(Math.random() * 3)
+
+
+                if (colorpick == 1) {
+                    dot.color = "green"
+                }
+                if (colorpick == 2) {
+                    dot.color = "blue"
+                }
+                if (colorpick == 0) {
+                    dot.color = "red"
+                }
+                if (!(dot.x > 340 && dot.x < 360)) {
+                    dots.push(dot)
+                }
+            }
+            }
+            if (box3.isPointInside(TIP_engine)) {
+                for (let t = 0; t < cepts.length; t++) {
+                    if (!(cepts[t].totalBlue >= cepts[t].totalRed && cepts[t].totalBlue >= cepts[t].totalGreen)) {
+                        cepts[t].marked = 1
+                    }
+                }
+
+            dots = []
+
+            for (let t = 0; dots.length < 399; t++) {
+                let dot = new Circle(Math.random() * 700, Math.random() * 199, 3, "black")
+                let colorpick = Math.floor(Math.random() * 3)
+
+
+                if (colorpick == 1) {
+                    dot.color = "green"
+                }
+                if (colorpick == 2) {
+                    dot.color = "blue"
+                }
+                if (colorpick == 0) {
+                    dot.color = "red"
+                }
+                if (!(dot.x > 340 && dot.x < 360)) {
+                    dots.push(dot)
+                }
+            }
+            }
+            // if (cepts.length < 10) {
+            //     for(let t = 0;cepts.length<10;t++){
+            //         cepts[Math.floor(Math.random()*cepts.length)].clone()
+
+            //     }
+            //     console.log(cepts)
+            // }
+
 
             window.addEventListener('pointermove', continued_stimuli);
         });
@@ -934,12 +990,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     let dots = []
 
-    for (let t = 0; t < 99; t++) {
-        let dot = new Circle(Math.random() * 700, Math.random() * 199, 3, "red")
-        if(Math.random()<.33){
+    for (let t = 0; t < 399; t++) {
+        let dot = new Circle(Math.random() * 700, Math.random() * 199, 3, "black")
+        let colorpick = Math.floor(Math.random() * 3)
+
+
+        if (colorpick == 1) {
             dot.color = "green"
-        }else   if(Math.random()<.45){
+        }
+        if (colorpick == 2) {
             dot.color = "blue"
+        }
+        if (colorpick == 0) {
+            dot.color = "red"
         }
         if (!(dot.x > 340 && dot.x < 360)) {
             dots.push(dot)
@@ -958,9 +1021,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             for (let t = 0; t < 4; t++) {
                 let node = new Circle(130 + (t * 150), 450, 12, "white")
-                let weight1 = Math.random()
-                let weight2 = Math.random()
-                let weight3 = Math.random()
+                let weight1 = this.weights()
+                let weight2 = this.weights()
+                let weight3 = this.weights()
                 this.brainNodes.push([node, weight1, weight2, weight3])
             }
 
@@ -968,13 +1031,22 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             for (let t = 0; t < 3; t++) {
                 let node = new Circle(50 + (t * 290), 620, 12, "white")
-                let weight1 = Math.random()
-                let weight2 = Math.random()
-                let weight3 = Math.random()
-                let weight4 = Math.random()
+                let weight1 = this.weights()
+                let weight2 = this.weights()
+                let weight3 = this.weights()
+                let weight4 = this.weights()
                 this.outputs.push([node, weight1, weight2, weight3, weight4])
             }
 
+
+        }
+        weights() {
+            return Math.random()
+            // if(Math.random()<.5){
+            //     return 0
+            // }else{
+            //     return 1
+            // }
 
         }
         draw() {
@@ -997,26 +1069,26 @@ window.addEventListener('DOMContentLoaded', (event) => {
             canvas_context.font = "30px arial"
 
             canvas_context.fillStyle = "red"
-            canvas_context.fillText(`${this.redcount}`,50, 250)
+            canvas_context.fillText(`${this.redcount}`, 50, 250)
             canvas_context.fillStyle = "green"
-            canvas_context.fillText(`${this.greencount}`,325, 250)
+            canvas_context.fillText(`${this.greencount}`, 325, 250)
             canvas_context.fillStyle = "blue"
-            canvas_context.fillText(`${this.bluecount}`,625, 250)
+            canvas_context.fillText(`${this.bluecount}`, 625, 250)
 
 
 
-            this.inputNode1.color = `rgba(255,255,255,${(this.redcount / dots.length)/cepts.length})`
-            this.inputNode2.color = `rgba(255,255,255,${(this.greencount / dots.length)/cepts.length})`
-            this.inputNode3.color = `rgba(255,255,255,${(this.bluecount / dots.length)/cepts.length})`
+            this.inputNode1.color = `rgba(255,255,255,${Math.max((this.redcount / dots.length) / cepts.length, (1/255))})`
+            this.inputNode2.color = `rgba(255,255,255,${Math.max((this.greencount / dots.length) / cepts.length, (1/255))})`
+            this.inputNode3.color = `rgba(255,255,255, ${Math.max((this.bluecount / dots.length) / cepts.length, (1/255))})`
             this.inputNode1.draw()
             this.inputNode2.draw()
             this.inputNode3.draw()
 
             for (let t = 0; t < this.brainNodes.length; t++) {
                 this.brainNodes[t][0].draw()
-                let link1 = new LineOP(this.brainNodes[t][0], this.inputNode1, "white", this.brainNodes[t][1]/(cepts.length/2))
-                let link2 = new LineOP(this.brainNodes[t][0], this.inputNode2, "white", this.brainNodes[t][2]/(cepts.length/2))
-                let link3 = new LineOP(this.brainNodes[t][0], this.inputNode3, "white", this.brainNodes[t][3]/(cepts.length/2))
+                let link1 = new LineOP(this.brainNodes[t][0], this.inputNode1, "white", this.brainNodes[t][1] / (cepts.length / 2))
+                let link2 = new LineOP(this.brainNodes[t][0], this.inputNode2, "white", this.brainNodes[t][2] / (cepts.length / 2))
+                let link3 = new LineOP(this.brainNodes[t][0], this.inputNode3, "white", this.brainNodes[t][3] / (cepts.length / 2))
                 link1.draw()
                 link2.draw()
                 link3.draw()
@@ -1026,10 +1098,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 this.outputs[t][0].draw()
 
                 // for (let k = 0; k < this.brainNodes.length; k++) {
-                let link1 = new LineOP(this.outputs[t][0], this.brainNodes[0][0], "white", this.outputs[t][1]/(cepts.length/2))
-                let link2 = new LineOP(this.outputs[t][0], this.brainNodes[1][0], "white", this.outputs[t][2]/(cepts.length/2))
-                let link3 = new LineOP(this.outputs[t][0], this.brainNodes[2][0], "white", this.outputs[t][3]/(cepts.length/2))
-                let link4 = new LineOP(this.outputs[t][0], this.brainNodes[3][0], "white", this.outputs[t][4]/(cepts.length/2))
+                let link1 = new LineOP(this.outputs[t][0], this.brainNodes[0][0], "white", this.outputs[t][1] / (cepts.length / 2))
+                let link2 = new LineOP(this.outputs[t][0], this.brainNodes[1][0], "white", this.outputs[t][2] / (cepts.length / 2))
+                let link3 = new LineOP(this.outputs[t][0], this.brainNodes[2][0], "white", this.outputs[t][3] / (cepts.length / 2))
+                let link4 = new LineOP(this.outputs[t][0], this.brainNodes[3][0], "white", this.outputs[t][4] / (cepts.length / 2))
                 link1.draw()
                 link2.draw()
                 link3.draw()
@@ -1038,13 +1110,73 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
 
         }
-        clean(){
-            if(this.marked == 1){
+        clean() {
+            if (cepts.length < 3) {
+                for(let t = 0;cepts.length<255;t++){
+                    cepts[Math.floor(Math.random()*cepts.length)].clone()
+
+                }
+                console.log(cepts)
+            }
+
+            if (this.marked == 1) {
                 cepts.splice(cepts.indexOf(this), 1)
             }
 
+  
+
+        }
+        clone() {
+            let clone = new Perceptron()
+
+            for (let t = 0; t < this.brainNodes.length; t++) {
+                clone.brainNodes[t][1] = this.brainNodes[t][1]
+                clone.brainNodes[t][2] = this.brainNodes[t][2]
+                clone.brainNodes[t][3] = this.brainNodes[t][3]
+            }
+            for (let t = 0; t < this.outputs.length; t++) {
+                clone.outputs[t][1] = this.outputs[t][1]
+                clone.outputs[t][2] = this.outputs[t][2]
+                clone.outputs[t][3] = this.outputs[t][3]
+                clone.outputs[t][4] = this.outputs[t][4]
+            }
+            clone.compute()
+            clone.mutate()
+            cepts.push(clone)
+        }
+        mutate() {
+
+
+            for (let t = 0; t < this.brainNodes.length; t++) {
+                this.brainNodes[t][1] = this.brainNodes[t][1]*(((Math.random()-.5)*.2)+1)
+                this.brainNodes[t][2] = this.brainNodes[t][2]*(((Math.random()-.5)*.2)+1)
+                this.brainNodes[t][3] = this.brainNodes[t][3]*(((Math.random()-.5)*.2)+1)
+            }
+            for (let t = 0; t < this.outputs.length; t++) {
+                this.outputs[t][1] = this.outputs[t][1]*(((Math.random()-.5)*.2)+1)
+                this.outputs[t][2] = this.outputs[t][2]*(((Math.random()-.5)*.2)+1)
+                this.outputs[t][3] = this.outputs[t][3]*(((Math.random()-.5)*.2)+1)
+                this.outputs[t][4] = this.outputs[t][4]*(((Math.random()-.5)*.2)+1)
+            }
+
+
         }
         compute() {
+
+            this.redcount = 0
+            this.greencount = 0
+            this.bluecount = 0
+            for (let t = 0; t < dots.length; t++) {
+                if (dots[t].color == "red") {
+                    this.redcount++
+                }
+                if (dots[t].color == "green") {
+                    this.greencount++
+                }
+                if (dots[t].color == "blue") {
+                    this.bluecount++
+                }
+            }
 
             let weightCalcred = 0
             let weightCalcgreen = 0
@@ -1055,30 +1187,30 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             for (let t = 0; t < this.outputs.length; t++) {
                 for (let k = 0; k < this.brainNodes.length; k++) {
-                    weightCalcred += (this.brainNodes[k][1] * (this.redcount / dots.length))*this.outputs[t][k + 1]
-                    weightCalcgreen +=( this.brainNodes[k][2] * (this.greencount / dots.length))*this.outputs[t][k + 1]
-                    weightCalcblue += (this.brainNodes[k][3] * (this.bluecount / dots.length))* this.outputs[t][k + 1]
+                    weightCalcred += (this.brainNodes[k][1] * (this.redcount / dots.length)) * this.outputs[t][k + 1]
+                    weightCalcgreen += (this.brainNodes[k][2] * (this.greencount / dots.length)) * this.outputs[t][k + 1]
+                    weightCalcblue += (this.brainNodes[k][3] * (this.bluecount / dots.length)) * this.outputs[t][k + 1]
 
                 }
 
 
- 
+
                 this.totalRed += weightCalcred
                 this.totalGreen += weightCalcgreen
                 this.totalBlue += weightCalcblue
             }
 
-            this.totalRed  = Math.max(this.totalRed, 0)
+            this.totalRed = Math.max(this.totalRed, 0)
             this.totalGreen = Math.max(this.totalGreen, 0)
             this.totalBlue = Math.max(this.totalBlue, 0)
 
 
 
-            this.totalRed = (this.totalRed/(this.totalRed+this.totalGreen+this.totalBlue))
+            this.totalRed = (this.totalRed / (this.totalRed + this.totalGreen + this.totalBlue))
 
-            this.totalGreen = (this.totalGreen/(this.totalRed+this.totalGreen+this.totalBlue))
+            this.totalGreen = (this.totalGreen / (this.totalRed + this.totalGreen + this.totalBlue))
 
-            this.totalBlue = (this.totalBlue/(this.totalRed+this.totalGreen+this.totalBlue))
+            this.totalBlue = (this.totalBlue / (this.totalRed + this.totalGreen + this.totalBlue))
 
 
 
@@ -1090,11 +1222,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
             //     this.totalLeft = 0
             //     this.totalRight = 1
             // }
-            this.outputs[0][0].color = `rgba(255,0,0,${this.totalRed/cepts.length})`
-            this.outputs[1][0].color = `rgba(0,255,0,${this.totalGreen/cepts.length})`
-            this.outputs[2][0].color = `rgba(0,0,255,${this.totalBlue/cepts.length})`
+            this.outputs[0][0].color = `rgba(255,0,0,${Math.max(this.totalRed / cepts.length, (1/255))})`
+            this.outputs[1][0].color = `rgba(0,255,0,${Math.max(this.totalGreen / cepts.length, (1/255))})`
+            this.outputs[2][0].color = `rgba(0,0,255,${Math.max(this.totalBlue / cepts.length, (1/255))})`
 
-        
+
 
         }
 
@@ -1103,7 +1235,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     let cepts = []
-    for(let t =0;t<250;t++){
+    for (let t = 0; t < 255; t++) {
         let perspy = new Perceptron()
         cepts.push(perspy)
     }
@@ -1122,15 +1254,27 @@ window.addEventListener('DOMContentLoaded', (event) => {
             cepts[t].draw()
         }
         for (let t = 0; t < cepts.length; t++) {
-            cepts[t].clean()
+            if(cepts[t].marked == 1){
+                cepts[t].clean()
+            }
         }
-        if(keysPressed[' ']){
+        if (keysPressed[' ']) {
             console.log(cepts)
         }
-        if(keysPressed['w']){
-           cepts = [cepts[0]]
+        if (keysPressed['e']) {
+            cepts.splice(1)
         }
-        
+        if (keysPressed['w']) {
+            cepts.splice(2)
+        }
+        if (keysPressed['q']) {
+            cepts[Math.floor(Math.random()*cepts.length)].clone()
+        }
+        if (keysPressed['s']) {
+            cepts[Math.floor(Math.random()*cepts.length)].mutate()
+            cepts[Math.floor(Math.random()*cepts.length)].compute()
+        }
+
 
 
 
