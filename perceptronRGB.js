@@ -1113,7 +1113,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             if (cepts.length < 3) {
                 for (let t = 0; cepts.length < 255; t++) {
                     cepts[Math.floor(Math.random() * cepts.length)].clone()
-
+                    cepts.push(new Perceptron())
                 }
                 console.log(cepts)
             }
