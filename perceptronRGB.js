@@ -3,7 +3,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const gamepadAPI = {
         controller: {},
         turbo: true,
-        connect: function (evt) {
+        connect: function (evt) {[g]
             if (navigator.getGamepads()[0] != null) {
                 gamepadAPI.controller = navigator.getGamepads()[0]
                 gamepadAPI.turbo = true;
@@ -1101,7 +1101,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
                 for (let g = 0; g < this.brainNodes.length; g++) {
                     for (let k = 1; k < this.brainNodes[g].length; k++) {
-                        let link1 = new LineOP(this.outputs[t][0], this.brainNodes[g][0], "white", this.outputs[t][g] / (cepts.length / 2))
+                        let link1 = new LineOP(this.outputs[t][0], this.brainNodes[g][0], "white", this.outputs[t][g+1] / (cepts.length / 2))
                         link1.draw()
                     }
                 }
