@@ -980,7 +980,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     let setup_canvas = document.getElementById('canvas') //getting canvas from document
     let popbar = document.getElementById('pop') //getting canvas from document
-    let upflip = document.getElementById('up') //getting canvas from document
+    // let upflip = document.getElementById('up') //getting canvas from document
     let nodflip = document.getElementById('nods') //getting canvas from document
 
 
@@ -994,8 +994,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }, false);
 
 
+    popbar.addEventListener('input', function () {
+        timer = timer%timerlock
+        timerlock = popbar.value
+    }, false);
 
-    upflip.onclick = upflipper
+
+
+    // upflip.onclick = upflipper
 
     function upflipper() {
         up *= -1
@@ -1052,9 +1058,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
             this.brainsize = nodflip.value / 1
 
 
-            this.xpos = 105
+            this.xpos = 110
             this.xmom = 0
-            this.ypos = 105
+            this.ypos = 110
             this.ymom = 0
             this.bodycolor = getRandomLightColor()
             this.body = new Circle(this.xpos, this.ypos, 3, this.bodycolor, this.xmom, this.ymom)
@@ -1062,7 +1068,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             this.outputs = []
 
             for (let t = 0; t < this.brainsize; t++) {
-                let node = new Circle(700 / (this.brainsize + 1) + (t * (700 / (this.brainsize + 1))), 450, 12, "white")
+                let node = new Circle(700 / (this.brainsize + 1) + (t * (700 / (this.brainsize + 1))), 450, 12, "#AAAAAA")
                 let weight1 = this.weights()
                 let weight2 = this.weights()
                 let weight3 = this.weights()
@@ -1092,7 +1098,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
             for (let t = 0; t < 4; t++) {
-                let node = new Circle(100+(170*t), 620, 12, "white")
+                let node = new Circle(100 + (170 * t), 620, 12, "white")
                 let arr = [node]
 
                 // if(t == 0){
@@ -1348,6 +1354,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 // clone.outputs[t][3] = this.outputs[t][3]
                 // clone.outputs[t][4] = this.outputs[t][4]
             }
+            clone.body.color = this.body.color
+
             clone.compute()
             clone.mutate()
             cepts.splice(1, 0, clone)
@@ -1355,6 +1363,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
         mutate() {
 
+            var letters = '0123456789ABCDEF';
+            let colormute = this.body.color.split('')
+            for (let t = 1; t < colormute.length; t++) {
+                if (Math.random() < .1) {
+                    colormute[t] = letters[(Math.floor(Math.random() * 16) + 0)];
+                }
+            }
+
+            this.body.color = colormute.join('')
 
             for (let t = 0; t < this.brainNodes.length; t++) {
                 if (Math.random() < .005) {
@@ -1575,14 +1592,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 let weightCalcUp = 0
                 let weightCalcDown = 0
                 for (let k = 0; k < this.brainNodes.length; k++) {
-                    weightCalcLeft += (this.brainNodes[k][1] * ((this.xpos - 105) / 210)) * this.outputs[t][k + 1]
-                    weightCalcRight += (this.brainNodes[k][2] * ((this.xpos - 105) / 210)) * this.outputs[t][k + 1]
-                    weightCalcUp += (this.brainNodes[k][3] * ((this.ypos - 105) / 210)) * this.outputs[t][k + 1]
-                    weightCalcDown += (this.brainNodes[k][4] * ((this.ypos - 105) / 210)) * this.outputs[t][k + 1]
-                    weightCalcLeft += (this.brainNodes[k][5] * ((food.x - 105) / 210)) * this.outputs[t][k + 1]
-                    weightCalcRight += (this.brainNodes[k][6] * ((food.x - 105) / 210)) * this.outputs[t][k + 1]
-                    weightCalcUp += (this.brainNodes[k][7] * ((food.y - 105) / 210)) * this.outputs[t][k + 1]
-                    weightCalcDown += (this.brainNodes[k][8] * ((food.y - 104) / 210)) * this.outputs[t][k + 1]
+                    weightCalcLeft += (this.brainNodes[k][1] * ((this.xpos - 110) / 100)) * this.outputs[t][k + 1]
+                    weightCalcRight += (this.brainNodes[k][2] * ((this.xpos - 110) / 100)) * this.outputs[t][k + 1]
+                    weightCalcUp += (this.brainNodes[k][3] * ((this.ypos - 110) / 100)) * this.outputs[t][k + 1]
+                    weightCalcDown += (this.brainNodes[k][4] * ((this.ypos - 110) / 100)) * this.outputs[t][k + 1]
+                    weightCalcLeft += (this.brainNodes[k][5] * ((food.x - 110) / 100)) * this.outputs[t][k + 1]
+                    weightCalcRight += (this.brainNodes[k][6] * ((food.x - 110) / 100)) * this.outputs[t][k + 1]
+                    weightCalcUp += (this.brainNodes[k][7] * ((food.y - 110) / 100)) * this.outputs[t][k + 1]
+                    weightCalcDown += (this.brainNodes[k][8] * ((food.y - 110) / 100)) * this.outputs[t][k + 1]
                 }
 
 
@@ -1676,26 +1693,31 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             outputarr = [this.totalUp, this.totalDown, this.totalLeft, this.totalRight]
 
+            this.ymom *= .95
+            this.xmom *= .95
 
             // this.ymom += (this.totalDown-this.totalUp)/10
 
             // this.xmom += (this.totalRight-this.totalLeft)/10
 
             // if (Math.max(...outputarr) == this.totalUp) {
-            this.ymom -= this.totalUp / 50
+            this.ymom -= this.totalUp
             // }
 
             // if (Math.max(...outputarr) == this.totalDown) {
-            this.ymom += this.totalDown / 50
+            this.ymom += this.totalDown
             // }
 
             // if (Math.max(...outputarr) == this.totalLeft) {
-            this.xmom -= this.totalLeft / 50
+            this.xmom -= this.totalLeft
             // }
 
             // if (Math.max(...outputarr) == this.totalRight) {
-            this.xmom += this.totalRight / 50
+            this.xmom += this.totalRight
             // }
+
+            // this.xmom = this.totalRight-this.totalLeft
+            // this.ymom = this.totalDown-this.totalUp
 
         }
 
@@ -1710,10 +1732,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
     let food = new Circle(11 + (Math.random() * 200), 11 + (Math.random() * 200), 5, "red")
 
-    food.x = 105
-    food.y = 105
+    food.x = 109
+    food.y = 109
     let timer = 0
-    let timerlock = 50
+    let timerlock = popbar.value
     function main() {
         canvas_context.clearRect(0, 0, canvas.width, canvas.height)  // refreshes the image
         timer++
@@ -1766,6 +1788,26 @@ window.addEventListener('DOMContentLoaded', (event) => {
         if (keysPressed['g']) {
             timerlock--
         }
+        if (keysPressed['h']) {
+            let pairs = []
+            for (let t = 0; t < cepts[0].brainNodes.length; t++) {
+                let sum = 0
+                for (let k = 1; k < cepts[0].brainNodes[t].length; k++) {
+                    sum += cepts[0].brainNodes[t][k]
+                }
+                pairs.push([sum, t])
+            }
+            pairs.sort((a, b) => (a[0] > b[0]) ? 1 : -1)
+
+            console.log(pairs)
+            let dist = 70
+            for (let t = 0; t < pairs.length; t++) {
+                console.log(cepts[0].brainNodes[pairs[t][1]][0].x)
+                cepts[0].brainNodes[pairs[t][1]][0].x = (700 / (cepts[0].brainsize + 1) + (t * (700 / (cepts[0].brainsize + 1))))
+                console.log(cepts[0].brainNodes[pairs[t][1]][0].x)
+            }
+
+        }
         if (keysPressed['s']) {
             cepts[Math.floor(Math.random() * cepts.length)].mutate()
             cepts[Math.floor(Math.random() * cepts.length)].compute()
@@ -1792,10 +1834,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 if (t != index) {
                     cepts[t].marked = 1
                 } else {
-                    cepts[t].xpos = 105
-                    cepts[t].ypos = 105
-                    cepts[t].body.x = 105
-                    cepts[t].body.y = 105
+                    cepts[t].xpos = 110
+                    cepts[t].ypos = 110
+                    cepts[t].body.x = 110
+                    cepts[t].body.y = 110
                     cepts[t].xmom = 0
                     cepts[t].ymom = 0
                 }
@@ -1818,12 +1860,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
             // console.log(cepts)
             for (let t = 0; cepts.length < 50; t++) {
                 cepts[0].clone()
+                // if(Math.random()<.1){
+                //     cepts.push(new Perceptron())
+                // }
             }
-            food = new Circle(11 + (Math.random() * 200), 11 + (Math.random() * 200), 5, "red")
+            food = new Circle(31 + (Math.random() * 140), 31 + (Math.random() * 140), 5, "red")
         }
 
         canvas_context.fillStyle = "white"
-        canvas_context.fillText(`${timer % timerlock}`, 50, 250)
+        canvas_context.fillText(`${timer % timerlock}/${timerlock}`, 50, 250)
 
     }
 
