@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<div class="gamepage-wrapper">
+
+    <!-- Basic header. Should hold simple branding and navigation. -->
+    <header class="gamepage-header">
+        <!-- Image provided by Eucalyp Studio in Artificial Intelligence from https://www.iconfinder.com/iconsets/artificial-intelligence-6 -->
+        <!-- <img id="site-logo" src="assets/iconfinder_ArtificialIntelligence29_2890576_blackwhite.png"> -->
+        <ul class="nav-content">
+            <!-- <li class="nav-list-item"><a class="nav-link-text" href="">Home</a></li> -->
+            <li class="nav-list-item"><a class="nav-link-text" href="http://ditzbitz.com/games.html">Games</a></li>
+            <!-- <li class="nav-list-item"><a class="nav-link-text" href="https://www.linkedin.com/in/cole-ditzler-41b160133/" target="_blank">About</a></li> -->
+        </ul>
+    </header>
+
+    <!-- Container for page content. Contains and aligns instructions, game, and ads. -->
+    <div class="game-content-container">
+
+        <!-- Left side banner. Should contain instuctions for the game. -->
+        <aside class="gamepage-left-aside">
+            <h2>Perceptron</h2>
+            <ul>
+                <li> Tell the perceptrons which color dots are the most common.</li>
+                <li> The numbers beneath them will tell you.</li>
+                <li> If you lie to the perceptrons, they will die.</li>
+                <li> Also, if they are stupid, they may die anyway.</li>
+                <li> Train them for a while, if you please.</li>
+                <li> Hold S to mutate a perceptron, the longer you hold it, the more will mutate, and more mutations will accumulate.</li>
+                <li> Press E to see the best weighting so far (this will ruin the genepool).</li>
+                <li> Hold Z to answer honestly automatically, for quick training.</li>
+                <input style="width: 100%" step="1" type="range" min="3" max="1001" value="73" class="slider-squarex"
+                    id="pop">
+                    <li> Data set size.</li>
+                <input style="width: 100%" step="1" type="range" min="1" max="21" value="8" class="slider-squarex"
+                    id="nods">
+                <li> Neuron count.</li>
+                <br>
+                <button id = 'up'>Flip Selective pressure</button>
+
+            </ul>
+        </aside>
+
+        <!-- Game container. Holds the game for this page scaled to fit.  -->
+
+        <div class="game-container">
+
+            <div id="dog-image-container">
+
+                <canvas id="canvas" width="700" height="700"></canvas>
+
+                <script src="perceptronDriverComplex.js"></script>
+            </div id="go">
+        </div>
+
+        <!-- Right side banner. No content for now. Perhaps ad-space in the future. -->
+        <aside class="gamepage-right-aside">
+            <!-- Add content here later. -->
+        </aside>
+    </div>
+
+    <!-- Simple footer. Just a copyright notice. -->
+    <footer class="games-footer">
+    </footer>
+
+</div>
+
+</html>
