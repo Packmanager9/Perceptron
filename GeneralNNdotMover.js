@@ -1199,6 +1199,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
     class GenNN {
         constructor(inputs, layercount, layersetupArray, outputs = 2) {
+            this.body = new Circle(350.01, 350, .4, getRandomLightColor())
             this.inputs = [...inputs]
             this.layercount = layercount
             this.layersetupArray = [...layersetupArray]
@@ -1221,6 +1222,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     this.tempinputs[n] = this.normalize(this.tempinputs[n], Math.min(...this.tempclone), Math.max(...this.tempclone))
                 }
             }
+
             this.outputs = this.layersetupArray[this.layersetupArray.length - 1]
             this.outputMagnitudes = []
             this.outputMagnitudesClone = []
@@ -1228,25 +1230,33 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 this.outputMagnitudes.push(this.tempinputs[t])
                 this.outputMagnitudesClone.push(this.tempinputs[t])
             }
+
             this.outputSum = 0
             for (let t = 0; t < this.outputs; t++) {
                 this.outputMagnitudes[t] = this.normalize(this.outputMagnitudes[t], Math.min(...this.outputMagnitudesClone), Math.max(...this.outputMagnitudesClone))
                 this.outputSum += this.outputMagnitudes[t]
             }
+
             this.outputSum = 1 / this.outputSum
             for (let t = 0; t < this.outputs; t++) {
                 this.outputMagnitudes[t] *= this.outputSum
             }
+
+            // console.log(this)
+
         }
         changeInputs(inputs) {
             this.inputs = [...inputs]
             this.tempinputs = [...inputs]
+            // this.structure = []
             this.structureclone = []
             for (let t = 0; t < this.structure.length; t++) {
                 this.structureclone[t] = []
                 for (let k = 0; k < this.structure[t].length; k++) {
                     this.structureclone[t].push(this.structure[t][k].clone(this.tempinputs))
+                    // console.log(this.structureclone)
                 }
+                // this.structure.push(nodes)
                 this.tempinputs = []
                 this.tempclone = []
                 for (let g = 0; g < this.structureclone[this.structureclone.length - 1].length; g++) {
@@ -1257,6 +1267,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     this.tempinputs[n] = this.normalize(this.tempinputs[n], Math.min(...this.tempclone), Math.max(...this.tempclone))
                 }
             }
+
             this.outputs = this.layersetupArray[this.layersetupArray.length - 1]
             this.outputMagnitudes = []
             this.outputMagnitudesClone = []
@@ -1264,65 +1275,108 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 this.outputMagnitudes.push(this.tempinputs[t])
                 this.outputMagnitudesClone.push(this.tempinputs[t])
             }
+
             this.outputSum = 0
             for (let t = 0; t < this.outputs; t++) {
                 this.outputMagnitudes[t] = this.normalize(this.outputMagnitudes[t], Math.min(...this.outputMagnitudesClone), Math.max(...this.outputMagnitudesClone))
                 this.outputSum += this.outputMagnitudes[t]
             }
+
             this.outputSum = 1 / this.outputSum
             for (let t = 0; t < this.outputs; t++) {
                 this.outputMagnitudes[t] *= this.outputSum
             }
+
             this.structure = this.structureclone
             console.log(this.outputMagnitudes)
+
+
+        this.body.x += this.outputMagnitudes[0] *1
+        this.body.x -= this.outputMagnitudes[1] *1
+        this.body.y += this.outputMagnitudes[2] *1
+        this.body.y -= this.outputMagnitudes[3] *1
+
+        if(this.body.x < 100){
+            this.body.x = 600
+        }
+        if(this.body.x > 600){
+            this.body.x = 100
+        }
+        if(this.body.y > 600){
+            this.body.y = 100
+        }
+        if(this.body.y < 100){
+            this.body.y = 600
+        }
+        this.body.draw()
+
         }
         normalize(val, min, max) {
+            // Shift to positive to avoid issues when crossing the 0 line
             if (min < 0) {
                 max += 0 - min;
                 val += 0 - min;
                 min = 0;
             }
+            // Shift values from 0 - max
             val = val - min;
             max = max - min;
             return Math.max(0, Math.min(1, val / max));
         }
     }
 
-    let SandMesh = new GenNN([.5, .25, .3, .6, .13], 3, [12, 8, 4], 4)
+    let dot = new Circle(350.01, 350, 1, "red")
 
 
-
-
-
-    let dot = new Circle(350.01, 350, .5, "red")
-
-
-    let SandMesh = new GenNN([(dot.x - 350) / 35000, (dot.y - 350) / 35000], 3, [4, 4, 4], 4)
+    // let SandMesh = new GenNN([(dot.x - 350) / 35000, (dot.y - 350) / 35000], 5, [50, 25, 13, 6, 4], 4)
 
     let meshes = []
 
-    for (let t = 0; t < 25; t++) {
+    for(let t =0;t<2;t++){
+        let meshinput = [] // [350,350]
+        for(let k = 0;k<4;k++){
+            meshinput.push(0.0001*Math.random())
+        }
+        let SandMesh = new GenNN([...meshinput], 3, [8, 6, 4], 4)
         meshes.push(SandMesh)
     }
     function main() {
+        canvas_context.fillStyle = "#00000006"
+        canvas_context.fillRect(0,0,700,700)
         // canvas_context.clearRect(0, 0, canvas.width, canvas.height)  // refreshes the image
-        dot.draw()
+        // dot.draw()
         // if(keysPressed['z']){
-        SandMesh.changeInputs([(dot.x - 350) / 350, (dot.y - 35000) / 35000])
+        // SandMesh.changeInputs([(dot.x - 350) / 350, (dot.y - 35000) / 35000])
 
         // }
 
+        for(let t =0;t<meshes.length;t++){
+            let meshinput = [] // [meshes[t].body.x,meshes[t].body.y]
+            for(let k = 0;k<meshes.length;k++){
+                meshinput.push(meshes[k].body.x)
+                meshinput.push(meshes[k].body.y)
+            }
 
-        if (keysPressed['z']) {
-            let mutationIndex = Math.floor(SandMesh.structure.length * Math.random())
-            let mutationIndexDeep = Math.floor(SandMesh.structure[mutationIndex].length * Math.random())
-            let mutationIndexDeeper = Math.floor(SandMesh.structure[mutationIndex][mutationIndexDeep].weights.length * Math.random())
-            SandMesh.structure[mutationIndex][mutationIndexDeep].weights[mutationIndexDeeper] *= -1
+
+            meshes[t].changeInputs([...meshinput])
+            if (keysPressed['z']) {
+                let mutationIndex = Math.floor(meshes[t].structure.length*Math.random())
+                let mutationIndexDeep = Math.floor(meshes[t].structure[mutationIndex].length*Math.random())
+                let mutationIndexDeeper = Math.floor(meshes[t].structure[mutationIndex][mutationIndexDeep].weights.length *Math.random())
+                meshes[t].structure[mutationIndex][mutationIndexDeep].weights[mutationIndexDeeper] *=-1
+            }
         }
-        dot.x += SandMesh.outputMagnitudes[0] * 1
-        dot.x -= SandMesh.outputMagnitudes[1] * 1
-        dot.y += SandMesh.outputMagnitudes[2] * 1
-        dot.y -= SandMesh.outputMagnitudes[3] * 1
+
+        // if (keysPressed['z']) {
+        //     let mutationIndex = Math.floor(SandMesh.structure.length*Math.random())
+        //     let mutationIndexDeep = Math.floor(SandMesh.structure[mutationIndex].length*Math.random())
+        //     let mutationIndexDeeper = Math.floor(SandMesh.structure[mutationIndex][mutationIndexDeep].weights.length *Math.random())
+        //     SandMesh.structure[mutationIndex][mutationIndexDeep].weights[mutationIndexDeeper] *=-1
+        // }
+        // dot.x += SandMesh.outputMagnitudes[0] *1
+        // dot.x -= SandMesh.outputMagnitudes[1] *1
+        // dot.y += SandMesh.outputMagnitudes[2] *1
+        // dot.y -= SandMesh.outputMagnitudes[3] *1
         // console.log(dot)
     }
 
