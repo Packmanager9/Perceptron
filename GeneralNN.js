@@ -770,7 +770,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         canvas.style.background = style
         window.setInterval(function () {
             main()
-        }, 10)
+        }, 1)
         document.addEventListener('keydown', (event) => {
             keysPressed[event.key] = true;
         });
@@ -786,6 +786,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
             TIP_engine.body = TIP_engine
             // example usage: if(object.isPointInside(TIP_engine)){ take action }
 
+            dot.x = TIP_engine.x
+            dot.y = TIP_engine.y
 
             // food.x = TIP_engine.x
             // food.y = TIP_engine.y
@@ -1193,7 +1195,27 @@ window.addEventListener('DOMContentLoaded', (event) => {
             // console.log(clone)
             return clone
         }
+        
+        mutate() {
+            for (let t = 0; t < this.weights.length; t++) {
+                if (Math.random() < mutationrate) {
+                    this.weights[t] += (.2 * (Math.random() - .5))
+                }
+                if (Math.random() < mutationrate) {
+                    this.weights[t] *= -1
+                }
+                if (Math.random() < mutationrate) {
+                    this.weights[t] *= 0
+                }
+                if (Math.random() < mutationrate) {
+                    this.weights[t] = this.weight()
+                }
+                if (Math.random() < mutationrate) {
+                    this.weights[t] *= 1 + ((Math.random() - .5) * .5)
+                }
+            }
 
+        }
     }
 
 
@@ -1218,7 +1240,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     this.tempclone.push(this.structure[this.structure.length - 1][g].value)
                 }
                 for (let n = 0; n < this.tempinputs.length; n++) {
-                    this.tempinputs[n] = this.normalize(this.tempinputs[n], Math.min(...this.tempclone), Math.max(...this.tempclone))
+                    // this.tempinputs[n] = this.normalize(this.tempinputs[n], Math.min(...this.tempclone), Math.max(...this.tempclone))
                 }
             }
             this.outputs = this.layersetupArray[this.layersetupArray.length - 1]
@@ -1238,6 +1260,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 this.outputMagnitudes[t] *= this.outputSum
             }
         }
+        mutate(){
+            for(let t = 0;t<this.structure.length;t++){
+                for(let k = 0;k<this.structure[t].length;k++){
+                    this.structure[t][k].mutate()
+                }
+            }
+            this.changeInputs(this.inputs)
+        }
         changeInputs(inputs) {
             this.inputs = [...inputs]
             this.tempinputs = [...inputs]
@@ -1254,7 +1284,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     this.tempclone.push(this.structureclone[this.structureclone.length - 1][g].value)
                 }
                 for (let n = 0; n < this.tempinputs.length; n++) {
-                    this.tempinputs[n] = this.normalize(this.tempinputs[n], Math.min(...this.tempclone), Math.max(...this.tempclone))
+                    // this.tempinputs[n] = this.normalize(this.tempinputs[n], Math.min(...this.tempclone), Math.max(...this.tempclone))
                 }
             }
             this.outputs = this.layersetupArray[this.layersetupArray.length - 1]
@@ -1274,7 +1304,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 this.outputMagnitudes[t] *= this.outputSum
             }
             this.structure = this.structureclone
-            console.log(this.outputMagnitudes)
+            // console.log(this.outputMagnitudes)
         }
         normalize(val, min, max) {
             if (min < 0) {
@@ -1288,41 +1318,93 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
 
-    let SandMesh = new GenNN([.5, .25, .3, .6, .13], 3, [12, 8, 4], 4)
+    // let SandMesh = new GenNN([.5, .25, .3, .6, .13], 3, [12, 8, 4], 4)
 
 
 
 
 
-    let dot = new Circle(350.01, 350, .5, "red")
+    let dot = new Circle(300.01, 300, .05, "red")
+    let dot2 = new Circle(300.01, 300, .05, "orange")
 
+    let xrun = 0
+    let yrun = 0
 
-    let SandMesh = new GenNN([(dot.x - 350) / 35000, (dot.y - 350) / 35000], 3, [4, 4, 4], 4)
+    let SandMesh = new GenNN([.5,.5,], 5, [128, 64, 32, 16, 8], 4)
+    let SandMesh2 = new GenNN([.5,.5], 5, [128, 64, 32, 16, 8], 4)
 
-    let meshes = []
+    let globalx = -1
+    let globaly = -1
+    console.log(SandMesh)
+    // let meshes = []
 
-    for (let t = 0; t < 25; t++) {
-        meshes.push(SandMesh)
-    }
+    // for (let t = 0; t < 25; t++) {
+    //     meshes.push(SandMesh)
+    // }
+
+    let counter = 0
+    let mutationrate = .005
     function main() {
         // canvas_context.clearRect(0, 0, canvas.width, canvas.height)  // refreshes the image
         dot.draw()
+        dot2.draw()
         // if(keysPressed['z']){
-        SandMesh.changeInputs([(dot.x - 350) / 350, (dot.y - 35000) / 35000])
+        SandMesh.changeInputs([(dot2.x-350)/350,  (dot2.y-350)/350])
+        SandMesh2.changeInputs([(dot.x-350)/350, (dot.y-350)/350])
 
-        // }
+        if(keysPressed['z']){
+        SandMesh.mutate()
 
-
-        if (keysPressed['z']) {
-            let mutationIndex = Math.floor(SandMesh.structure.length * Math.random())
-            let mutationIndexDeep = Math.floor(SandMesh.structure[mutationIndex].length * Math.random())
-            let mutationIndexDeeper = Math.floor(SandMesh.structure[mutationIndex][mutationIndexDeep].weights.length * Math.random())
-            SandMesh.structure[mutationIndex][mutationIndexDeep].weights[mutationIndexDeeper] *= -1
         }
+        counter++
+        if(counter%25 == 0){
+            // dot.x = xrun
+            // dot.y = yrun
+            // dot2.x = xrun
+            // dot2.y = yrun
+            xrun+=25
+            if(xrun == 700){
+                yrun+=25
+                xrun = 0
+            }
+            if(yrun == 700){
+                yrun=0
+                xrun=0
+                globalx += 1
+                if(globalx == 0){
+                    dot.color = "cyan"
+                }else{
+                    dot.color = "yellow"
+                }
+                globaly = 1
+            }
+        }
+
+
+        // if (keysPressed['z']) {
+        //     let mutationIndex = Math.floor(SandMesh.structure.length * Math.random())
+        //     let mutationIndexDeep = Math.floor(SandMesh.structure[mutationIndex].length * Math.random())
+        //     let mutationIndexDeeper = Math.floor(SandMesh.structure[mutationIndex][mutationIndexDeep].weights.length * Math.random())
+        //     SandMesh.structure[mutationIndex][mutationIndexDeep].weights[mutationIndexDeeper] *= -1
+        // }
         dot.x += SandMesh.outputMagnitudes[0] * 1
         dot.x -= SandMesh.outputMagnitudes[1] * 1
         dot.y += SandMesh.outputMagnitudes[2] * 1
         dot.y -= SandMesh.outputMagnitudes[3] * 1
+        dot.x += SandMesh.outputMagnitudes[4] * 1
+        dot.x -= SandMesh.outputMagnitudes[5] * 1
+        dot.y += SandMesh.outputMagnitudes[6] * 1
+        dot.y -= SandMesh.outputMagnitudes[7] * 1
+        dot.x += SandMesh.outputMagnitudes[0] * 1
+
+
+        dot2.x -= SandMesh2.outputMagnitudes[1] * 1
+        dot2.y += SandMesh2.outputMagnitudes[2] * 1
+        dot2.y -= SandMesh2.outputMagnitudes[3] * 1
+        dot2.x += SandMesh2.outputMagnitudes[4] * 1
+        dot2.x -= SandMesh2.outputMagnitudes[5] * 1
+        dot2.y += SandMesh2.outputMagnitudes[6] * 1
+        dot2.y -= SandMesh2.outputMagnitudes[7] * 1
         // console.log(dot)
     }
 
