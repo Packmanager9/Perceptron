@@ -987,19 +987,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
 
-    nodflip.addEventListener('input', function () {
-        cepts = []
-        for (let t = 0; t < 200; t++) {
-            let perspy = new Perceptron()
-            cepts.push(perspy)
-        }
-    }, false);
+    // nodflip.addEventListener('input', function () {
+    //     cepts = []
+    //     for (let t = 0; t < 200; t++) {
+    //         let perspy = new Perceptron()
+    //         cepts.push(perspy)
+    //     }
+    // }, false);
 
 
-    popbar.addEventListener('input', function () {
-        timer = timer % timerlock
-        timerlock = popbar.value
-    }, false);
+    // popbar.addEventListener('input', function () {
+    //     timer = timer % timerlock
+    //     timerlock = popbar.value
+    // }, false);
 
 
 
@@ -1105,6 +1105,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
             for (let t = 0; t < this.outputs; t++) {
                 this.outputMagnitudes[t] *= this.outputSum
             }
+        }
+        clone() {
+            let clone = new GenNN(this.inputs, this.layercount, this.layersetupArray, 4)
+            for (let t = 0; t < this.structure.length; t++) {
+                for (let k = 0; k < this.structure[t].length; k++) {
+                    for (let p = 0; p < this.structure[t][k].weights.length; p++) {
+                        clone.structure[t][k].weights[p] = this.structure[t][k].weights[p]
+                    }
+                }
+            }
+            return clone
         }
         mutate(){
             for(let t = 0;t<this.structure.length;t++){
